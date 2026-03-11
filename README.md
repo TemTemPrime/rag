@@ -1,0 +1,1 @@
+This is a RAG AI model that uses langchain(the most inconsistent libary ever) and hosted in streamlit to describe documents this is my first ever rag project mostly done by reading through documentation looking at my teacher's old code (useful but the entire framework is different due to langchain having bipolar) and a tiny bit of chatgpt in the last part of the code
