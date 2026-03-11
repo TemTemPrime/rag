@@ -36,9 +36,10 @@ if uploaded_files and api_key:
         model = ChatGoogleGenerativeAI(
                model = 'gemini-2.5-flash',
                temperature = 0,
-               max_tokens = None
+               max_tokens = None,
+               google_api_key=api_key
         )
-        embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+        embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001",google_api_key=api_key)
         embedding_dim = len(embeddings.embed_query("hello world"))
         index = faiss.IndexFlatL2(embedding_dim)
 
