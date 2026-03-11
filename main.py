@@ -17,7 +17,7 @@ from langchain.agents import create_agent
 api_key = st.secrets.get("GEMINI_API_KEY")
 if api_key == None:
     st.error("Gemini api key not found. please add it in steamlit secrets")
-    st.stop
+    st.stop()
 st.set_page_config(page_title="PDF RAG Assistant", layout="wide")
 st.title("PDF Question Answering Assistant")
 uploaded_files = st.file_uploader("Upload PDF files", type=["pdf"], accept_multiple_files=True)
@@ -32,8 +32,6 @@ if uploaded_files and api_key:
             
         splitter = RecursiveCharacterTextSplitter(chunk_size=2500, chunk_overlap=100)
         split_docs = splitter.split_documents(all_docs)
-
-        client = genai.Client(api_key=api_key)
 
         model = ChatGoogleGenerativeAI(
                model = 'gemini-2.5-flash',
@@ -50,6 +48,7 @@ if uploaded_files and api_key:
             docstore=InMemoryDocstore(),
             index_to_docstore_id={},
 )
+        
         @tool(response_format="content_and_artifact")
         def retrieve_context(query: str):
             """Retrieve information to help answer a query."""
@@ -72,7 +71,7 @@ if uploaded_files and api_key:
     query = st.text_input("Ask a question about your documents")
     if query:
         with st.spinner("Generating answer..."):
-            result = tools({"query": query})
+            result = agent({"query": query})
             st.markdown(f"### Answer:\n{result['result']}")
 
             st.markdown("###  Source Snippets:")
