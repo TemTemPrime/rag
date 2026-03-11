@@ -3,6 +3,10 @@ import os
 import streamlit as st
 from langchain_google_genai import ChatGoogleGenerativeAI
 
+import sys
+print(sys.version)
+
+
 api_key = st.secrets.get("GEMINI_API_KEY")
 if api_key == None:
     st.error("Gemini api key not found. please add it in steamlit secrets")
