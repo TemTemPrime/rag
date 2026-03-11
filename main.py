@@ -65,7 +65,20 @@ if uploaded_files and api_key:
             "You read pdf documents and answer questions about them when you are asked"
         )
         agent = create_agent(model, tools, system_prompt=prompt)
+
+
     st.success("Documents ready. Ask your question below.")
+    
+    query = st.text_input("Ask a question about your documents")
+    if query:
+        with st.spinner("Generating answer..."):
+            result = tools({"query": query})
+            st.markdown(f"### Answer:\n{result['result']}")
+
+            st.markdown("###  Source Snippets:")
+            for i, doc in enumerate(result["source_documents"], start=1):
+                snippet = doc.page_content.strip().replace("\n", " ")[:500]
+                st.markdown(f"**Source {i}:** {snippet}...")
       
             
 
