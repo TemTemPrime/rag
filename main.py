@@ -27,6 +27,7 @@ if uploaded_files and api_key:
                 tmp_file.write(uploaded_file.read())
                 loader = PyMuPDFLoader(tmp_file.name)
                 all_docs.extend(loader.load())
+                #test
 
 
 
