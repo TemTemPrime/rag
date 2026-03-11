@@ -28,7 +28,7 @@ if uploaded_files and api_key:
                 tmp_file.write(uploaded_file.read())
                 loader = PyMuPDFLoader(tmp_file.name)
                 all_docs.extend(loader.load())
-                assert len(all_docs) == 1
+            
                 print(f"Total characters: {len(all_docs[0].page_content)}")
         splitter = RecursiveCharacterTextSplitter(chunk_size=2500, chunk_overlap=100)
         split_docs = splitter.split_documents(all_docs)
