@@ -9,6 +9,9 @@ from langchain_community.vectorstores import FAISS
 import getpass
 from dotenv import load_dotenv
 import tempfile
+import faiss
+from langchain_community.docstore.in_memory import InMemoryDocstore
+
 
 
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
@@ -32,12 +35,21 @@ if uploaded_files and api_key:
         splitter = RecursiveCharacterTextSplitter(chunk_size=2500, chunk_overlap=100)
         split_docs = splitter.split_documents(all_docs)
 
-client = genai.Client(api_key=api_key)
+        client = genai.Client(api_key=api_key)
 
-model = ChatGoogleGenerativeAI(
-    model = 'gemini-2.5-flash',
-    temperature = 0,
-    max_tokens = None
+        model = ChatGoogleGenerativeAI(
+               model = 'gemini-2.5-flash',
+               temperature = 0,
+               max_tokens = None
+        )
+        embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+        embedding_dim = len(embeddings.embed_query("hello world"))
+        index = faiss.IndexFlatL2(embedding_dim)
 
+        vector_store = FAISS(
+            embedding_function=embeddings,
+            index=index,
+            docstore=InMemoryDocstore(),
+            index_to_docstore_id={},
 )
-embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+
