@@ -15,6 +15,6 @@ uploaded_files = st.file_uploader("Upload PDF files", type=["pdf"], accept_multi
 model = ChatGoogleGenerativeAI(
     model = 'gemini-2.5-flash',
     temperature = 0,
-    max_token = None
+    max_tokens = None
 
 )
