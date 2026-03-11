@@ -1,6 +1,7 @@
 
 import os
 import streamlit as st
+from google import genai
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -27,9 +28,12 @@ if uploaded_files and api_key:
                 tmp_file.write(uploaded_file.read())
                 loader = PyMuPDFLoader(tmp_file.name)
                 all_docs.extend(loader.load())
-                #testing if this solves the uv problem
+                assert len(all_docs) == 1
+                print(f"Total characters: {len(all_docs[0].page_content)}")
+        splitter = RecursiveCharacterTextSplitter(chunk_size=2500, chunk_overlap=100)
+        split_docs = splitter.split_documents(all_docs)
 
-
+client = genai.Client(api_key=api_key)
 
 model = ChatGoogleGenerativeAI(
     model = 'gemini-2.5-flash',
@@ -37,3 +41,4 @@ model = ChatGoogleGenerativeAI(
     max_tokens = None
 
 )
+embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
